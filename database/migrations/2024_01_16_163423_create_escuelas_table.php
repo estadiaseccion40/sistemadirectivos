@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('escuelas', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->string('cct');
+            $table->string('direccion');
+            $table->string('turno');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

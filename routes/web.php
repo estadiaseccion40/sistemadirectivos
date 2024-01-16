@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EscuelaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,22 +23,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/directores', function(){
+
         return view('directores.index');
     })->name('directores.index');
 
-    Route::get('/escuelas', function(){
-        return view('escuelas.index');
-    })->name('escuelas.index');
+    Route::get('/escuelas',[EscuelaController::class,'index'])
+        ->name('escuelas.index');
 
-    Route::get('/escuelas/create', function(){
-        return view('escuelas.create');
-    })->name('escuelas.create');
-    
-    Route::post('/escuelas', function(){
-        // Aquí es donde procesarías los datos del formulario.
-        // Puedes acceder a los datos del formulario con request()->all()
-        return request();
-    })->name('escuelas');
+    Route::get('/escuelas/create',[EscuelaController::class,'create'] )
+        ->name('escuelas.create');
+
+    Route::post('/escuelas', [EscuelaController::class,'store'])
+        ->name('escuelas.store');
+
     Route::get('/cotejadores', function(){
         return view('cotejadores.index');
     })->name('cotejadores.index');

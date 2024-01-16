@@ -12,7 +12,9 @@ class EscuelaController extends Controller
      */
     public function index()
     {
-        //
+        $escuelas = Escuela::all(); // Obtiene todas las escuelas
+
+        return view('escuelas.index', ['escuelas' => $escuelas]);
     }
 
     /**
@@ -20,7 +22,7 @@ class EscuelaController extends Controller
      */
     public function create()
     {
-        //
+        return view('escuelas.create');
     }
 
     /**
@@ -28,7 +30,24 @@ class EscuelaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nombre' => 'required|max:255',
+            'cct' => 'required|max:255|unique:escuelas',
+            'direccion' => 'required|max:255',
+            'turno' => 'required|max:255',
+        ]);
+
+        $cct = $validatedData['cct'];
+        auth()->user()->escuelas()->create([
+            'nombre' => $validatedData['nombre'],
+            'cct' => $cct,
+            'direccion' => $validatedData['direccion'],
+            'turno' => $validatedData['turno'],
+        ]);
+
+        session()->flash('status', 'Escuela con CCT: '.$cct.' ha sido creada');
+
+        return view('escuelas.index');
     }
 
     /**
